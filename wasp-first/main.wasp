@@ -1,0 +1,28 @@
+app waspFirst {
+  wasp: {
+    version: "^0.13.2"
+  },
+  title: "My First Wasp TODO"
+}
+
+//Routes
+route RootRoute { path: "/", to: MainPage }
+page MainPage {
+  component: import { MainPage } from "@src/MainPage"
+}
+
+route HelloRoute { path: "/hello/:name", to: HelloPage}
+page HelloPage {
+  component: import { HelloPage } from "@src/HelloPage"
+}
+route TodoRoute {path: "/todo", to: TodoPage}
+page TodoPage {
+  component: import {TodoPage} from "@src/TodoPage"
+}
+
+//DB Entities
+entity Task {=psl
+  id  Int @id @default(autoincrement())
+  description String
+  isDone Boolean @default(false)
+psl=}
