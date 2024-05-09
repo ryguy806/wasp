@@ -14,3 +14,9 @@ export const updateTask = async ({ id, isDone }, context) => {
     },
   });
 };
+
+export const deleteTask = async ({ id }, context) => {
+  return context.entities.Task.delete({
+    where: { id },
+  });
+};

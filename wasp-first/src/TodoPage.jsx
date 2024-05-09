@@ -1,4 +1,10 @@
-import { getTasks, useQuery, createTask } from "wasp/client/operations";
+import {
+  getTasks,
+  useQuery,
+  createTask,
+  updateTask,
+  deleteTask,
+} from "wasp/client/operations";
 
 export const TodoPage = () => {
   const { data: tasks, isLoading, error } = useQuery(getTasks);
@@ -23,6 +29,15 @@ const TaskView = ({ task }) => {
       window.alert("Error while updating task:" + error.message);
     }
   };
+
+  const handleDeleteTodo = async () => {
+    try {
+      await deleteTask({ id: task.id });
+    } catch (error) {
+      window.alert("Error while deleting task:" + error.message);
+    }
+  };
+
   return (
     <div>
       <input
@@ -32,6 +47,11 @@ const TaskView = ({ task }) => {
         onChange={handleIsDoneChange}
       />
       {task.description}
+      {!task.isDone ? (
+        <></>
+      ) : (
+        <button onClick={handleDeleteTodo}>Delete?</button>
+      )}
     </div>
   );
 };

@@ -38,6 +38,11 @@ action updateTask {
   entities: [Task]
 }
 
+action deleteTask {
+  fn: import {deleteTask} from "@src/actions",
+  entities: [Task]
+}
+
 //DB Entities
 entity Task {=psl
   id Int @id @default(autoincrement())
