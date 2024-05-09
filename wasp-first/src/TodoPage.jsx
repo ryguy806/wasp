@@ -16,9 +16,21 @@ export const TodoPage = () => {
 };
 
 const TaskView = ({ task }) => {
+  const handleIsDoneChange = async (event) => {
+    try {
+      await updateTask({ id: task.id, isDone: event.target.checked });
+    } catch (error) {
+      window.alert("Error while updating task:" + error.message);
+    }
+  };
   return (
     <div>
-      <input type='checkbox' id={String(task.id)} checked={task.isDone} />
+      <input
+        type='checkbox'
+        id={String(task.id)}
+        checked={task.isDone}
+        onChange={handleIsDoneChange}
+      />
       {task.description}
     </div>
   );

@@ -33,6 +33,11 @@ action createTask {
   entities: [Task]
 }
 
+action updateTask {
+  fn: import {updateTask} from "@src/actions",
+  entities: [Task]
+}
+
 //DB Entities
 entity Task {=psl
   id Int @id @default(autoincrement())

@@ -5,3 +5,12 @@ export const createTask = async (args, context) => {
     },
   });
 };
+
+export const updateTask = async ({ id, isDone }, context) => {
+  return context.entities.Task.update({
+    where: { id },
+    data: {
+      isDone: isDone,
+    },
+  });
+};
