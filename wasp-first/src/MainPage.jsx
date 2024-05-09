@@ -1,3 +1,4 @@
+import { Link } from "wasp/client/router";
 import "./Main.css";
 
 export const MainPage = () => {
@@ -9,7 +10,7 @@ export const MainPage = () => {
       <div className='container'>
         <div>Hello World!</div>
         <div className='Button'>
-          <button onClick={handleRoutechange}>Click Here to go to Todos</button>
+          <Link to='/todo'>Click here to view Todos!</Link>
         </div>
       </div>
     </>
