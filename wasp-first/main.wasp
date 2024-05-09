@@ -20,6 +20,12 @@ page TodoPage {
   component: import {TodoPage} from "@src/TodoPage"
 }
 
+//Operations
+query getTasks {
+  fn: import {getTasks} from "@src/queries",
+  entities: [Task]
+}
+
 //DB Entities
 entity Task {=psl
   id  Int @id @default(autoincrement())
