@@ -72,7 +72,7 @@ const NewTaskForm = () => {
     event.preventDefault();
     try {
       const target = event.target;
-      const description = target.descriptionvalue;
+      const description = target.description.value;
       target.reset();
       await createTask({ description });
     } catch (error) {
