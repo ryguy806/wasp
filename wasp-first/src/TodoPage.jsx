@@ -13,13 +13,13 @@ export const TodoPage = () => {
   return (
     <div>
       <NewTaskForm />
-
       {tasks && <TaskList tasks={tasks} />}
-
       {isLoading && "...Loading"}
       {error && "Error" + error}
       <br />
       <br />
+      Logout does not work. It's still being developed. Please note that Wasp is
+      still in Beta at this time.
       <div className='Button'>
         <button onCLick={logout}>Logout</button>
       </div>
