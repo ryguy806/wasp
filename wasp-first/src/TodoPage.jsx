@@ -1,36 +1,61 @@
-import {
-  getTasks,
-  useQuery,
-  createTask,
-  updateTask,
-  deleteTask,
-} from "wasp/client/operations";
+import { Tasks } from "wasp/client/crud";
 import { logout } from "wasp/client/auth";
+import { useState } from "react";
 
 export const TodoPage = () => {
-  const { data: tasks, isLoading, error } = useQuery(getTasks);
+  const { data: tasks, isLoading, error } = Tasks.getAll.useQuery();
+  const createTask = Tasks.create.useAction();
+  const [taskDescription, setTaskDescription] = useState("");
+
+  const handleCreateTask = () => {
+    createTask({ description: taskDescription, isDone: false });
+    setTaskDescription("");
+  };
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+  if (error) return <div>Error: {error.message}</div>;
 
   return (
-    <div>
-      <NewTaskForm />
-      {tasks && <TaskList tasks={tasks} />}
-      {isLoading && "...Loading"}
-      {error && "Error" + error}
-      <br />
-      <br />
-      Logout does not work. It's still being developed. Please note that Wasp is
-      still in Beta at this time.
+    <div
+      style={{
+        fontSize: "1.5rem",
+        display: "grid",
+        placeContent: "center",
+        height: "100vh",
+      }}
+    >
+      <div>
+        <input
+          value={taskDescription}
+          onChange={(e) => setTaskDescription(e.target.value)}
+        />
+        <button onClick={handleCreateTask}>Create Task</button>
+      </div>
+
+      <ul>
+        {tasks.map((task) => (
+          <li key={task.id}>
+            <TaskView task={task} />
+          </li>
+        ))}
+      </ul>
+
       <div className='Button'>
-        <button onCLick={logout}>Logout</button>
+        <button onClick={logout}>Logout</button>
       </div>
     </div>
   );
 };
 
 const TaskView = ({ task }) => {
+  const updateTask = Tasks.update.useAction();
+  const [todo, setTodo] = useState(task.isDone);
+
   const handleIsDoneChange = async (event) => {
     try {
-      await updateTask({ id: task.id, isDone: event.target.checked });
+      updateTask({ id: task.id, isDone: event.target.checked });
     } catch (error) {
       window.alert("Error while updating task:" + error.message);
     }

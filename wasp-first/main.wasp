@@ -46,11 +46,6 @@ query getTasks {
 }
 
 //Actions
-action createTask {
-  fn: import {createTask} from "@src/actions",
-  entities: [Task]
-}
-
 action updateTask {
   fn: import {updateTask} from "@src/actions",
   entities: [Task]
@@ -74,3 +69,20 @@ entity Task {=psl
   user User? @relation(fields: [userId], references: [id])
   userId Int?
 psl=}
+
+//AUTO-CRUD
+crud Tasks {
+  entity: Task,
+  operations: {
+    getAll: {
+      isPublic: true
+    },
+    get: {},
+    update: {
+      overrideFn: import {updateTask} from "@src/actions"
+    },
+    create: {
+      overrideFn: import {createTask} from "@src/actions"
+    }
+  },
+}
