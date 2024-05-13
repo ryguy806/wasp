@@ -5,6 +5,7 @@ import {
   updateTask,
   deleteTask,
 } from "wasp/client/operations";
+import { logout } from "wasp/client/auth";
 
 export const TodoPage = () => {
   const { data: tasks, isLoading, error } = useQuery(getTasks);
@@ -17,6 +18,11 @@ export const TodoPage = () => {
 
       {isLoading && "...Loading"}
       {error && "Error" + error}
+      <br />
+      <br />
+      <div className='Button'>
+        <button onCLick={logout}>Logout</button>
+      </div>
     </div>
   );
 };
