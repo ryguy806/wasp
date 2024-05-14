@@ -35,6 +35,7 @@ page HelloPage {
 }
 route TodoRoute {path: "/todo", to: TodoPage}
 page TodoPage {
+  authRequired: true,
   component: import {TodoPage} from "@src/TodoPage"
 }
 

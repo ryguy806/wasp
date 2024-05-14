@@ -1,7 +1,7 @@
 import { Link } from "wasp/client/router";
 import "./Main.css";
 
-export const MainPage = ({ sser }) => {
+export const MainPage = ({ user }) => {
   const handleRoutechange = () => {
     console.log("Route change");
   };

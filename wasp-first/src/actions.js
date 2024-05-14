@@ -5,12 +5,9 @@ export const createTask = async (args, context) => {
     throw new HttpError(401, "Not today Satan!");
   }
 
-  const { description } = args;
-  const { Task } = context.entities;
-
-  return await Task.create({
+  return context.entities.Task.create({
     data: {
-      description: description,
+      description: args.description,
       user: { connect: { id: context.user.id } },
     },
   });
@@ -21,10 +18,9 @@ export const updateTask = async ({ id, isDone }, context) => {
     throw new HttpError(401, "Not today Satan!");
   }
 
-  return Task.updateMany({
-    where: { id: id, user: { id: user.id } },
+  return context.entities.Task.updateMany({
+    where: { id: id, user: { id: context.user.id } },
     data: {
-      user: { connect: { id: context.user.id } },
       isDone: isDone,
     },
   });

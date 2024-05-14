@@ -8,13 +8,9 @@ import {
 import { logout } from "wasp/client/auth";
 import { useState } from "react";
 
-export const TodoPage = () => {
+export const TodoPage = ({ user }) => {
+  console.log(user);
   const { data: tasks, isLoading, error } = useQuery(getTasks);
-
-  const handleCreateTask = () => {
-    createTask({ description: taskDescription, isDone: false });
-    setTaskDescription("");
-  };
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -45,6 +41,15 @@ const TaskView = ({ task }) => {
       window.alert("Error while udating task: " + error.message);
     }
   };
+
+  const handleDeleteTodo = async () => {
+    try {
+      await deleteTask({ id: task.id });
+    } catch (error) {
+      window.alert("Error while deleting task: " + error.message);
+    }
+  };
+
   return (
     <div>
       <input
@@ -57,7 +62,11 @@ const TaskView = ({ task }) => {
       {!task.isDone ? (
         <></>
       ) : (
-        <button onClick={handleDeleteTodo}>Delete?</button>
+        <>
+          <button style={{ marginLeft: "20px" }} onClick={handleDeleteTodo}>
+            Delete?
+          </button>
+        </>
       )}
     </div>
   );
