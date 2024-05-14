@@ -1,11 +1,15 @@
-import { Tasks } from "wasp/client/crud";
+import {
+  createTask,
+  updateTask,
+  deleteTask,
+  getTasks,
+  useQuery,
+} from "wasp/client/operations";
 import { logout } from "wasp/client/auth";
 import { useState } from "react";
 
 export const TodoPage = () => {
-  const { data: tasks, isLoading, error } = Tasks.getAll.useQuery();
-  const createTask = Tasks.create.useAction();
-  const [taskDescription, setTaskDescription] = useState("");
+  const { data: tasks, isLoading, error } = useQuery(getTasks);
 
   const handleCreateTask = () => {
     createTask({ description: taskDescription, isDone: false });
@@ -18,29 +22,10 @@ export const TodoPage = () => {
   if (error) return <div>Error: {error.message}</div>;
 
   return (
-    <div
-      style={{
-        fontSize: "1.5rem",
-        display: "grid",
-        placeContent: "center",
-        height: "100vh",
-      }}
-    >
-      <div>
-        <input
-          value={taskDescription}
-          onChange={(e) => setTaskDescription(e.target.value)}
-        />
-        <button onClick={handleCreateTask}>Create Task</button>
-      </div>
+    <div>
+      <NewTaskForm />
 
-      <ul>
-        {tasks.map((task) => (
-          <li key={task.id}>
-            <TaskView task={task} />
-          </li>
-        ))}
-      </ul>
+      {tasks && <TaskList tasks={tasks} />}
 
       <div className='Button'>
         <button onClick={logout}>Logout</button>
@@ -50,25 +35,16 @@ export const TodoPage = () => {
 };
 
 const TaskView = ({ task }) => {
-  const updateTask = Tasks.update.useAction();
-  const [todo, setTodo] = useState(task.isDone);
-
   const handleIsDoneChange = async (event) => {
     try {
-      updateTask({ id: task.id, isDone: event.target.checked });
+      await updateTask({
+        id: task.id,
+        isDone: event.target.checked,
+      });
     } catch (error) {
-      window.alert("Error while updating task:" + error.message);
+      window.alert("Error while udating task: " + error.message);
     }
   };
-
-  const handleDeleteTodo = async () => {
-    try {
-      await deleteTask({ id: task.id });
-    } catch (error) {
-      window.alert("Error while deleting task:" + error.message);
-    }
-  };
-
   return (
     <div>
       <input

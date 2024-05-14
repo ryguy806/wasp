@@ -16,13 +16,10 @@ export const createTask = async (args, context) => {
   });
 };
 
-export const updateTask = async (args, context) => {
+export const updateTask = async ({ id, isDone }, context) => {
   if (!context.user) {
     throw new HttpError(401, "Not today Satan!");
   }
-
-  const { id, isDone } = args;
-  const { Task } = context.entities;
 
   return Task.updateMany({
     where: { id: id, user: { id: user.id } },
